@@ -1,0 +1,34 @@
+Source: keyman-keyboardprocessor
+Build-Depends: debhelper (>=10~),
+               meson,
+               ninja-build
+Section: text
+Priority: optional
+Maintainer: Debian Input Method Team <debian-input-method@lists.debian.org>
+Uploaders: Daniel Glassey <wdg@debian.org>
+Standards-Version: 4.2.1
+Homepage: https://www.keyman.com
+Vcs-Browser: https://salsa.debian.org/input-method-team/keyman-keyboardprocessor
+Vcs-Git: https://salsa.debian.org/input-method-team/keyman-keyboardprocessor.git
+
+Package: libkmnkbp0-0
+Architecture: any
+Section: libs
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
+Description: Keyman keyboard processing library
+ The keyboard processing library processes compiled
+ Keyman keyboards.
+
+Package: libkmnkbp-dev
+Architecture: any
+Section: libdevel
+Depends: libkmnkbp0-0 (= ${binary:Version}), ${misc:Depends}
+Multi-Arch: same
+Description: Development files for Keyman keyboard processing library
+ The keyboard processing library processes compiled
+ Keyman keyboards.
+ .
+ This is the development library and headers to use Keyman
+ keyboards in an application, toolkit or input method engine.
