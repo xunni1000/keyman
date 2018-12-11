@@ -8,16 +8,18 @@
 # This script is uses commands available to Git Bash on Windows. (mingw32)
 
 function display_usage {
-  echo "Usage: $0 [branch]"
+  echo "Usage: $0 <branch> <PR>"
+  echo "branch: String of the associated Git branch on the PR"
+  echo "PR:     Number associated with https://github.com/keymanapp/keyman/pulls"
   exit 1
 }
 
 function setup {
-  if [[ "$1" = "" ]]; then
+  if [[ "$#" -ne 2 ]] || [[ "$1" = "" ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
     display_usage
   fi
 
-  echo "Checking triggers for branch: $1"
+  echo "Checking triggers for branch: $1 - https://github.com/keymanapp/keyman/pulls/$2"
   git fetch
   git checkout master
   git pull
