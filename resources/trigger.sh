@@ -23,22 +23,10 @@ fail() {
     exit 1
 }
 
-remote_branch_exists() {
-  echo "Verifying Git branch '$1' exists"
-  git ls-remote --heads git@github.com:keymanapp/keyman "$1" | wc -l
-  if [ $? -ne 1 ]; then
-    fail "Git branch '$1' doesn't exist. Exiting"
-  fi
-
-  return
-}
-
 function validate_params() {
-  if [[ "$#" -ne 2 ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
+  if [[ "$#" -ne "2" ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
     display_usage
   fi
-
-  remote_branch_exists $1
 }
 
 setup() {
@@ -105,6 +93,5 @@ get_diffs() {
 }
 
 validate_params "$@"
-exit
 setup "$@"
 get_diffs "$@"
