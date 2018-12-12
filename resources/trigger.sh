@@ -8,9 +8,10 @@
 # This script is uses commands available to Git Bash on Windows. (mingw32)
 
 display_usage() {
-  echo "Usage: $0 <branch> <PR>"
+  echo "Usage: $0 <branch> <PR> <buildConfID>"
   echo "branch: String of the associated Git branch on the PR"
   echo "PR:     Number associated with https://github.com/keymanapp/keyman/pulls"
+  echo "buildConfID: id for the CI build configuration"
   exit 1
 }
 
@@ -24,7 +25,7 @@ fail() {
 }
 
 function validate_params() {
-  if [[ "$#" -ne "2" ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
+  if [[ "$#" -ne "3" ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
     display_usage
   fi
 }
@@ -80,7 +81,10 @@ get_diffs() {
       esac
     done
   done
+}
 
+print_diffs() {
+  echo "-------------------------------"
   echo "DO_ANDROID: $DO_ANDROID"
   echo "DO_IOS: $DO_IOS"
   echo "DO_KPAPI: $DO_KEYBOARDPROCESSOR"
@@ -88,10 +92,31 @@ get_diffs() {
   echo "DO_MAC: $DO_MAC"
   echo "DO_WEB: $DO_WEB"
   echo "DO_WINDOWS: $DO_WINDOWS"
-
-
+  echo "-------------------------------"
 }
 
-validate_params "$@"
-setup "$@"
-get_diffs "$@"
+do_stubs() {
+  # temporary stubs
+  echo "temporary stubs"
+  DO_ANDROID=false
+  DO_IOS=false
+  DO_KEYBOARDPROCESSOR=true
+  DO_LINUX=false
+  DO_MAC=false
+  DO_WEB=true
+  DO_WINDOWS=false
+}
+
+setup_ci_trigger() {
+  echo "ok"
+  if [[ $DO_WEB ]]; then
+    echo '<build branchName="'"$1"'"><buildType id="'"$3"'"/></build>' >> "web.xml"
+  fi
+}
+
+#validate_params "$@"
+#setup "$@"
+#get_diffs "$@"
+do_stubs
+print_diffs
+setup_ci_trigger $@
