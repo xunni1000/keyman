@@ -7,18 +7,41 @@
 #
 # This script is uses commands available to Git Bash on Windows. (mingw32)
 
-function display_usage {
+display_usage() {
   echo "Usage: $0 <branch> <PR>"
   echo "branch: String of the associated Git branch on the PR"
   echo "PR:     Number associated with https://github.com/keymanapp/keyman/pulls"
   exit 1
 }
 
-function setup {
-  if [[ "$#" -ne 2 ]] || [[ "$1" = "" ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
+fail() {
+    FAILURE_MSG="$1"
+    if [[ "$FAILURE_MSG" == "" ]]; then
+        FAILURE_MSG="Unknown failure"
+    fi
+    echo "${ERROR_RED}$FAILURE_MSG${NORMAL}"
+    exit 1
+}
+
+remote_branch_exists() {
+  echo "Verifying Git branch '$1' exists"
+  git ls-remote --heads git@github.com:keymanapp/keyman "$1" | wc -l
+  if [ $? -ne 1 ]; then
+    fail "Git branch '$1' doesn't exist. Exiting"
+  fi
+
+  return
+}
+
+function validate_params() {
+  if [[ "$#" -ne 2 ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
     display_usage
   fi
 
+  remote_branch_exists $1
+}
+
+setup() {
   echo "Checking triggers for branch: $1 - https://github.com/keymanapp/keyman/pulls/$2"
   git fetch
   git checkout master
@@ -27,7 +50,7 @@ function setup {
   git pull
 }
 
-function get_diffs {
+get_diffs() {
   DO_ANDROID=false
   DO_IOS=false
   DO_KEYBOARDPROCESSOR=false
@@ -81,5 +104,7 @@ function get_diffs {
 
 }
 
+validate_params "$@"
+exit
 setup "$@"
 get_diffs "$@"
