@@ -13,6 +13,8 @@
 @property (nonatomic, weak) IBOutlet NSTextField *versionLabel;
 @property (nonatomic, weak) IBOutlet NSTextField *copyrightLabel;
 @property (nonatomic, weak) IBOutlet NSButton *licenseButton;
+@property (nonatomic, weak) IBOutlet NSButton *closeButton;
+@property (nonatomic, weak) IBOutlet NSButton *configureButton;
 @end
 
 @implementation KMAboutWindowController
@@ -75,7 +77,7 @@
     NSMutableAttributedString *aTitle = [[NSMutableAttributedString alloc] initWithString:title];
     [aTitle addAttribute:NSFontAttributeName value:[self.licenseButton font] range:NSMakeRange(0, title.length)];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+    [paragraphStyle setAlignment:NSTextAlignmentLeft];
     [aTitle addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title.length)];
     if (underlined)
         [aTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, title.length)];
