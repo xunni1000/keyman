@@ -40,11 +40,11 @@
       kmw.init({
 		    attachType:'auto'
       }).then(function() {
-        kmw.addKeyboards({id:'us',name:'English',languages:{id:'en',name:'English'}, filename:'../us-1.0.js'});
+        kmw.addKeyboards({id:'us',name:'English',languages:{id:'en',name:'English'}, filename:'../crk-1.0.js'});
 
         var modelStub = {'id': 'example.en.wordlist',
           languages: ['en'],
-          path: (window.location.href + "simple-en-wordlist.js")
+          path: (window.location.href + "example.crk.wordlist_general.model.js")
         };
         kmw.modelManager.register(modelStub);
       });
@@ -53,10 +53,7 @@
 
 <!-- Sample page HTML -->  
   <body> 
-    <h2>KeymanWeb Sample Page - Predictive Text UI (bootstrapping rig)</h2>
-    <p>As we're currently developing the predictive text feature, this page is subject to break as model
-      specifications change and new features are added.  Please update the backing model file as necessary.
-    </p>
+    <h2>KeymanWeb Sample Page - Predictive Text UI</h2>
     <div>
     <!-- 
       The following DIV is used to position the Button or Toolbar User Interfaces on the page.
@@ -65,11 +62,13 @@
     -->
     <div id='KeymanWebControl'></div>                                                                                   
 
-    <h3>Type in your language in this text area:</h3>
+    <h3>tânisi! ôtê nêhiyawêwin masinahikê:</h3>
     <textarea id='ta1' class='test' placeholder='Type here'></textarea>
   
-    <h3>or in this input field:</h3>
-    <input class='test' value='' placeholder='or here'/>
+    <div style="display:none">
+      <h3>or in this input field:</h3>
+      <input class='test' value='' placeholder='or here'/>
+    </div>
 
     <h3><a href="./">Return to testing home page</a></h3>
   </div>
