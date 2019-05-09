@@ -94,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements OnKeyboardEventLi
   private Toolbar toolbar;
   private Menu menu;
 
+  // TODO: Temporary overrides to display other Activities. Remove for production
+  private int override = 0;
+
   DownloadResultReceiver resultReceiver;
   private ProgressDialog progressDialog;
 
@@ -725,6 +728,22 @@ public class MainActivity extends AppCompatActivity implements OnKeyboardEventLi
 
   private void showGetStarted() {
     Intent getStartedIntent = new Intent(this, GetStartedActivity.class);
+
+    // TODO: Temporary overrides to display other Activities. Remove for production
+    if (override == 1) {
+      getStartedIntent = new Intent(this, com.tavultesoft.kmea.ModelsPickerActivity.class );
+      getStartedIntent.putExtra(KMManager.KMKey_LanguageID, "en");
+      getStartedIntent.putExtra(KMManager.KMKey_LanguageName, "English");
+    } else if (override == 2) {
+      getStartedIntent = new Intent(this, com.tavultesoft.kmea.ModelInfoActivity.class);
+      getStartedIntent.putExtra(KMManager.KMKey_LexicalModelID, "en.wordlist");
+      getStartedIntent.putExtra(KMManager.KMKey_LexicalModelName, "Simple Wordlist");
+      getStartedIntent.putExtra(KMManager.KMKey_LexicalModelVersion, "1.2.3");
+      getStartedIntent.putExtra(KMManager.KMKey_CustomModel, true);
+      getStartedIntent.putExtra(KMManager.KMKey_CustomHelpLink, "data/data/com.tavultesoft.kmapro.debug/models/example.en.wordlist.model/welcome.htm");
+    }
+    /// end of test code
+
     startActivity(getStartedIntent);
   }
 
