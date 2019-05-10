@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -23,12 +24,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Keyman Settings --> Languages Settings
  * Displays a list of installed languages and a count of their associated installed keyboards.
  */
-public final class LanguagesSettingsActivity extends AppCompatActivity {
+public final class LanguagesSettingsActivity extends AppCompatActivity implements KeyboardEventHandler.OnKeyboardDownloadEventListener {
 
   private Context context;
   private static Toolbar toolbar = null;
@@ -125,6 +128,10 @@ public final class LanguagesSettingsActivity extends AppCompatActivity {
   @Override
   public void onResume() {
     super.onResume();
+    KMKeyboardDownloaderActivity.addKeyboardDownloadEventListener(this);
+    BaseAdapter adapter = (BaseAdapter) listAdapter;
+    adapter.notifyDataSetChanged();
+
   }
 
   @Override
@@ -192,5 +199,27 @@ public final class LanguagesSettingsActivity extends AppCompatActivity {
       }
     }
     return list;
+  }
+
+  @Override
+  public void onKeyboardDownloadStarted(HashMap<String, String> keyboardInfo) {
+    // Do nothing
+  }
+
+  @Override
+  public void onKeyboardDownloadFinished(HashMap<String, String> keyboardInfo, int result) {
+    if (result > 0) {
+      KeyboardPickerActivity.addKeyboard(context, keyboardInfo);
+    }
+  }
+
+  @Override
+  public void onPackageInstalled(List<Map<String, String>> keyboardsInstalled) {
+    // Do nothing
+  }
+
+  @Override
+  public void onLexicalModelInstalled(List<Map<String, String>> lexicalModelsInstalled) {
+    // Do nothing
   }
 }
